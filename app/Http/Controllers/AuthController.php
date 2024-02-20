@@ -42,10 +42,10 @@ class AuthController extends Controller
             // $value = session('stack_level');
             // print_r($value);
             // die;
-            return redirect('/layout');
+            return redirect('/dashboard');
         }
         else{
-            return redirect('/')->with('flash_message','Login Field!');
+            return redirect('/login')->with('flash_message','Invalid credentials');
         }
         // echo "<pre>";
         print_r($activeUsers);
@@ -56,12 +56,18 @@ class AuthController extends Controller
         // }
 
     }
-public function layout(){
-    if (session()->has('user_name')){
-    return view('layout');
+    public function layout(){
+        if (session()->has('user_name')){
+            return view('layout');
+        }
+        else{
+            return redirect('/login');
+        }
     }
-    else{
-        return redirect('/');
+
+    public function logout(){
+        session()->forget('stack_level');
+        session()->forget('user_name');
+        return redirect('/login');
     }
-}
 }

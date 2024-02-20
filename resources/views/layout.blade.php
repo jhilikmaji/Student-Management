@@ -1,20 +1,14 @@
 @include('header')
 {{-- @if(Route::has('login')) --}}
 <div class="container-fluid">
-    {{-- <div class="row">
-        <div class="col-md-12">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light position-sticky">
-                <a class="navbar-brand" href="#">Student Management System</a>
-              </nav>
-        </div>
-    </div> --}}
-    {{-- sidebar code --}}
+
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-3">
             <div class="sidebar">
 
-                <div class="mt-3 mb-3">
-                    <h5>Student Management System</h5>
+                <div class="mt-3 mb-3 d-flex justify-content-between align-items-center">
+                    <h5>Admin Panel</h5>
+                    <a href="{{url('/logout')}}" class="cursor-pointer"><i class="fa fa-sign-out text-danger" title="Log Out" aria-hidden="true" ></i></a>
                 </div>
                 {{-- @auth --}}
                 <div class="sub-div">
@@ -28,14 +22,14 @@
                 </div>
                 {{-- @else --}}
                 <div class="sub-div">
-                    <a href="#">Teachers</a>
+                    <a href="{{url('/teachers')}}">Teachers</a>
                     <i class="fa fa-user-plus" aria-hidden="true"></i>
                 </div>
                 {{-- @endauth --}}
                 {{-- <a href="#about">About</a> --}}
               </div>
         </div>
-        <div class="col-md-10">
+        <div class="col-md-9">
             <div class="second-div">
                 @yield('content')
             </div>

@@ -1,33 +1,27 @@
 <?php
-
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
-use App\Models\Student;
+use App\Models\Teacher;
 use Illuminate\View\View;
 use Carbon\Carbon;
-class StudentController extends Controller
+class TeacherControlle extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function index()
     {
-        if (session()->has('user_name')){
-            $students = Student::all();
-            return View('admin.students.index')->with('students', $students);
-        }
-        else{
-            return redirect('/login');
-        }
+        $teachers = Teacher::all();
+        return View('admin.teachers.indexTeacher')->with('teachers', $teachers);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): View
+    public function create():view
     {
-        return view('admin.students.create');
+        return view('admin.teachers.createTeacher');
     }
 
     /**
@@ -35,13 +29,14 @@ class StudentController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'name' => 'required',
-            'email' => 'required',
-            'phoneNumber' => 'required',
+        $validated_teacher = $request->validate([
+            'name' => 'required | string',
+            'email' => 'required|email',
+            'subject' => 'required',
+            'phoneNumber' => 'required|digits:10',
             'gender' => 'required',
             'address' => 'required',
-            'dob' => 'required'
+            'dob' => 'required|date|before:1999-01-01',
         ]);
         $input =$request->all();
         $uniq_name = strtoupper(substr($input['name'], 0, 2));
@@ -50,19 +45,19 @@ class StudentController extends Controller
         $carbonDateOfBirth = Carbon::createFromFormat('Y-m-d', $dateOfBirth);
         $birthYear = $carbonDateOfBirth->year;
         $uniq_id = $uniq_name . $birthYear . $randomNumber ;
-        $input['student_id'] = $uniq_id;
+        $input['teacher_id'] = $uniq_id;
         // echo $uniq_id;
         // echo $birthYear;
         // echo "<pre>";
         // print_r($input);
         // die;
-        Student::create($input);
+        Teacher::create($input);
         // Save the student data
         // $student = Student::create($validated);
 
     // Send registration success email to the user
         // Mail::to($validated['email'])->send(new RegistrationSuccessEmail($student));
-        return redirect('students')->with('flash_message','Student Added Successfully!');
+        return redirect('teachers')->with('flash_message','Teacher Added Successfully!');
     }
 
     /**
@@ -78,8 +73,10 @@ class StudentController extends Controller
      */
     public function edit(string $id): View
     {
-        $students = Student::find($id);
-        return View('admin.students.edit')->with('students', $students);
+        $teachers = Teacher::find($id);
+        return View('admin.teachers.editTeacher')->with('teachers', $teachers);
+
+        //
     }
 
     /**
@@ -87,18 +84,28 @@ class StudentController extends Controller
      */
     public function update(Request $request, string $id): RedirectResponse
     {
-        $students = Student::find($id);
+        $teachers = Teacher::find($id);
+        $request->validate([
+            'name' => 'required | string',
+            'email' => 'required|email',
+            'subject' => 'required',
+            'phoneNumber' => 'required|digits:10',
+            'gender' => 'required',
+            'address' => 'required',
+            'dob' => 'required|date',
+        ]);
         $input = $request->all();
-        $students->update($input);
-        return redirect('students')->with('flash_message','Student Updated Successfully!');
+        $teachers->update($input);
+        return redirect('teachers')->with('flash_message','Teacher Updated Successfully!');
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id): RedirectResponse
     {
-        Student::destroy($id);
-        return redirect('students')->with('flash_message','Student Deleted Successfully!');
+        Teacher::destroy($id);
+        return redirect('teachers')->with('flash_message','Teacher Deleted Successfully!');
     }
 }

@@ -1,7 +1,7 @@
 @extends('layout')
 @section('content')
 @php
-print_r($data);
+// print_r($data);
 $male = 0;
 $female = 0;
 @endphp
@@ -17,9 +17,9 @@ $female = 0;
 
 @endforeach
 
-@php echo $female; echo $male; @endphp
+{{-- @php echo $female; echo $male; @endphp --}}
 
-<div style="width: 50%; height: 50%;">
+<div style="width: 30%; height: 30%;">
     <canvas id="myChart" ></canvas>
 </div>
 
@@ -34,7 +34,7 @@ $female = 0;
       data: {
         labels: ['Male', 'Female'],
         datasets: [{
-          label: '# of Votes',
+          label: 'Gender wise Chart',
           data: [maleCount, femaleCount],
           borderWidth: 1
         }]

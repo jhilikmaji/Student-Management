@@ -13,11 +13,7 @@ class DashboardController extends Controller
         $data = DB::table('students')
                 ->select('gender')
                 ->get();
-                // ->toArray();
-        // echo '<pre>';
         $data_array = json_decode($data, true);
-        // print_r($data); //die;
-        // print_r($data_array); die;
-        return view('dashboard.dashboard')->with('data', $data_array);;
+        return view('home.dashboard')->with('data', $data_array);
     }
 }
